@@ -17,14 +17,19 @@ class JobController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = Job::with('category', 'employer')->latest()->get();
+        $query = Job::with('category', 'employer')->latest();
 
-        return [
-            'jobs' => $jobs
-        ];
+        if ($request->has('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->category . '%');
+            });
+        }
+
+        return $query->get();
     }
+
 
     public function store(Request $request)
     {
