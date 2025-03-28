@@ -13,6 +13,8 @@ class Job extends Model
         'category_id',
     ];
 
+    protected $table = 'jobs_offered';
+
     public function employer()
     {
         return $this->belongsTo(User::class, 'employer_id');

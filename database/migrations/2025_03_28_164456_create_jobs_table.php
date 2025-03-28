@@ -16,12 +16,10 @@ return new class extends Migration
         Schema::create('jobs_offered', function (Blueprint $table) {
             $table->id();
 
-            // ✅ employer_id (User model)
             $table->foreignIdFor(User::class, 'employer_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            // ✅ category_id
             $table->foreignIdFor(Category::class)
                 ->constrained()
                 ->cascadeOnDelete();
