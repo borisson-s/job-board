@@ -13,9 +13,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('jobseeker');
-            $table->foreignId(Role::class)->nullable()->constrained()->onDelete('set null');
+            if (!Schema::hasColumn('users', 'role')) {
+                $table->string('role')->default('jobseeker');
+            }
+
+            $table->foreignIdFor(Role::class, 'role_id')
+                ->nullable()
+                ->constrained('roles')
+                ->onDelete('set null');
         });
+
 
     }
 
