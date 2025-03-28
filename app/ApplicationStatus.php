@@ -4,8 +4,8 @@ namespace App;
 
 enum ApplicationStatus: string
 {
-    case Pending = 'Pending';
-    case Accepted = 'Accepted';
-    case Rejected = 'Rejected';
+    case Pending = 'pending';
+    case Accepted = 'accepted';
+    case Rejected = 'rejected';
 
 }

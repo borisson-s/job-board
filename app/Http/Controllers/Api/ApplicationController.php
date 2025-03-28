@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Application;
 use App\Models\Job;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ApplicationController extends Controller
 {
@@ -57,5 +58,29 @@ class ApplicationController extends Controller
             'application' => $application,
         ];
     }
+
+    public function update(Request $request, Application $application)
+    {
+        $user = $request->user();
+
+        if ($user->role !== 'employer' || $application->job->employer_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(['accepted', 'rejected'])],
+        ]);
+
+        $application->update([
+            'status' => ApplicationStatus::from($validated['status']), // convert string to Enum
+        ]);
+
+        return response()->json([
+            'message' => 'Application status updated.',
+            'application' => $application,
+        ]);
+    }
+
+
 
 }
