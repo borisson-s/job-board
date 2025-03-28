@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(Job::class)
-                ->constrained()
+                ->constrained('jobs_offered')
                 ->cascadeOnDelete();
 
             $table->foreignIdFor(User::class, 'jobseeker_id')

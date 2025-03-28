@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\JobController;
 use Illuminate\Http\Request;
@@ -16,3 +17,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 
 Route::apiResource('jobs', JobController::class);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/jobs/{job}/applications', [ApplicationController::class, 'index']);
+    Route::post('/jobs/{job}/applications', [ApplicationController::class, 'store']);
+});
+
+
